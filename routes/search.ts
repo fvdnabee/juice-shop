@@ -69,6 +69,8 @@ module.exports = function searchProducts () {
       }).catch((error: ErrorWithParent) => {
         next(error.parent)
       })
+    
+    models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)
   }
 }
 // vuln-code-snippet end unionSqlInjectionChallenge dbSchemaChallenge
