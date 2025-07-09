@@ -70,7 +70,7 @@ module.exports = function searchProducts () {
         next(error.parent)
       })
     
-    models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)
+    models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name DESC`)
   }
 }
 // vuln-code-snippet end unionSqlInjectionChallenge dbSchemaChallenge
