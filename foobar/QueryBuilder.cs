@@ -51,6 +51,5 @@ namespace Abc1.QueryBuilder
         }
 
         #endregion
-
     }
 }
