@@ -34,7 +34,6 @@ namespace Abc1.QueryBuilder
         public async Task<List<TOutput>> GetPagedFoldersViewAsync<TOutput>(ViewSearchCriteriaDataModel searchCriteria)
             where TOutput : class
         {
-
             string sql = $"select * from abc.crm(" +
                          $"{searchCriteria.PageSize}, {searchCriteria.PageNumber}, '{searchCriteria.From}', '{searchCriteria.To}');";
 
