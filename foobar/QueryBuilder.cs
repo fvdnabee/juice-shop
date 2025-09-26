@@ -54,5 +54,3 @@ namespace Abc1.QueryBuilder
 
     }
 }
-
-
