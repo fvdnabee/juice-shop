@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie'
 import { ChallengeService } from '../Services/challenge.service'
 import { VulnLinesService, type result } from '../Services/vuln-lines.service'
 import { Component, Inject, type OnInit } from '@angular/core'
+import { DomSanitizer } from '@angular/platform-browser'
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UntypedFormControl } from '@angular/forms'
@@ -50,8 +51,9 @@ export class CodeSnippetComponent implements OnInit {
   public solved: Solved = { findIt: false, fixIt: false }
   public showFeedbackButtons: boolean = true
   public randomFixes: RandomFixes[] = []
+  public rendered: string = null;
 
-  constructor (@Inject(MAT_DIALOG_DATA) public dialogData: any, private readonly configurationService: ConfigurationService, private readonly codeSnippetService: CodeSnippetService, private readonly vulnLinesService: VulnLinesService, private readonly codeFixesService: CodeFixesService, private readonly challengeService: ChallengeService, private readonly cookieService: CookieService) { }
+  constructor (@Inject(MAT_DIALOG_DATA) public dialogData: any, private readonly configurationService: ConfigurationService, private readonly codeSnippetService: CodeSnippetService, private readonly vulnLinesService: VulnLinesService, private readonly codeFixesService: CodeFixesService, private readonly challengeService: ChallengeService, private readonly cookieService: CookieService, private readonly sanitizer: DomSanitizer) { }
 
   ngOnInit () {
     this.configurationService.getApplicationConfiguration().subscribe((config) => {
@@ -75,6 +77,7 @@ export class CodeSnippetComponent implements OnInit {
         this.shuffle()
       }
       this.solved.fixIt = this.dialogData.codingChallengeStatus >= 2
+      this.renderFixes();
     }, () => {
       this.fixes = null
     })
@@ -116,6 +119,14 @@ export class CodeSnippetComponent implements OnInit {
       this.setVerdict(verdict.verdict)
       this.hint = verdict.hint
     })
+  }
+
+  renderFixes () {
+    this.renderFix(this.fixes[0]);
+  }
+
+  renderFix = (fix: string) => {
+    this.rendered = this.sanitizer.bypassSecurityTrustHtml(`<code>${fix}</code>`);
   }
 
   lockIcon (): string {
